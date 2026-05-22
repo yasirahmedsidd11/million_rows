@@ -1,0 +1,21 @@
+{
+  "name": "shipping-api",
+  "version": "1.0.0",
+  "description": "Deployment-ready Shipping API that serves paginated, searchable shipping records from a CSV file",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "generate-csv": "node scripts/generate-csv.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.6",
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

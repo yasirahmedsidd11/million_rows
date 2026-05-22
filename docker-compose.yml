@@ -1,0 +1,17 @@
+services:
+  shipping-api:
+    build: .
+    ports:
+      - "${HOST_PORT:-3000}:3000"
+    environment:
+      PORT: "3000"
+      CSV_PATH: /app/data/rows.csv
+      # Set to 1 to regenerate CSV on every container start (slow).
+      # GENERATE_CSV: "0"
+      # Smaller dataset for quicker first boot (optional):
+      # TOTAL_ROWS: "10000"
+    volumes:
+      - csv_data:/app/data
+
+volumes:
+  csv_data:
