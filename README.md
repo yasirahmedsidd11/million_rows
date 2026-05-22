@@ -143,16 +143,19 @@ The image runs as a **non-root** user, uses **dumb-init** for signal handling, a
 
 ### Docker Compose (recommended)
 
+Runs **nginx on port 80** in front of the API (no `:3000` in the URL). See [DEPLOY.md](DEPLOY.md) for AWS EC2 steps.
+
 ```bash
 docker compose up --build
 ```
 
 | Resource | URL |
 |----------|-----|
-| API | http://localhost:3000 |
-| Swagger UI | http://localhost:3000/api-docs |
+| API | http://localhost/api/rows |
+| Swagger UI | http://localhost/api-docs |
+| Health | http://localhost/health |
 
-Override the host port: `HOST_PORT=8080 docker compose up`.
+Override the public HTTP port: `HTTP_PORT=8080 docker compose up` (nginx listens on 8080).
 
 **Compose environment** (edit `docker-compose.yml` as needed):
 
@@ -197,7 +200,7 @@ Every `/api/rows` request performs a **full scan** of the CSV to compute `total`
 
 Use this API as a backend for a candidate exercise:
 
-> Build a single-page app that consumes `GET /api/rows` and displays **stats** (`total_shipments`, `pending`, `delivered`, `completed`) plus a **paginated, searchable table** from `shipping_data` (`shipping_id`, `company_name`, `product_category`, `weight`, `route`, `date`, `status`). Support **page navigation**, configurable **page size** (default 1000, max 5000), and a **debounced search** field that sends `q` to the server. Show **loading**, **error**, and **empty** states; display **total** and **current page** from `shipping_data` (`total`, `totalPages`, `page`, `pageSize`). Point the app at a configurable API base URL (e.g. `http://localhost:8578` locally or `http://localhost:3000` in Docker). Any modern framework is fine; bonus for using `/api-docs.json`, accessible table/pagination, and clear setup instructions. No backend changes required.
+> Build a single-page app that consumes `GET /api/rows` and displays **stats** (`total_shipments`, `pending`, `delivered`, `completed`) plus a **paginated, searchable table** from `shipping_data` (`shipping_id`, `company_name`, `product_category`, `weight`, `route`, `date`, `status`). Support **page navigation**, configurable **page size** (default 1000, max 5000), and a **debounced search** field that sends `q` to the server. Show **loading**, **error**, and **empty** states; display **total** and **current page** from `shipping_data` (`total`, `totalPages`, `page`, `pageSize`). Point the app at a configurable API base URL (e.g. `http://localhost:8578` locally or `http://localhost` in Docker Compose (nginx on port 80)). Any modern framework is fine; bonus for using `/api-docs.json`, accessible table/pagination, and clear setup instructions. No backend changes required.
 
 ## Project structure
 
@@ -213,8 +216,11 @@ Use this API as a backend for a candidate exercise:
 │   ├── csv-service.js    # Stream, search, paginate
 │   ├── stats.js          # Fixed shipment stats
 │   └── openapi.js        # OpenAPI 3 spec
+├── nginx/
+│   └── default.conf      # Reverse proxy (port 80 → API :3000)
 ├── docker-compose.yml
 ├── Dockerfile
+├── DEPLOY.md             # EC2 deployment guide
 └── package.json
 ```
 
