@@ -143,7 +143,7 @@ The image runs as a **non-root** user, uses **dumb-init** for signal handling, a
 
 ### Docker Compose (recommended)
 
-Runs **nginx on port 80** in front of the API (no `:3000` in the URL). See [DEPLOY.md](DEPLOY.md) for AWS EC2 steps.
+Runs **nginx on port 80** in front of the API (no `:3000` in the URL). Production: **https://shipping.ifrstech.com** (HTTPS via Cloudflare; origin HTTP only). See [DEPLOY.md](DEPLOY.md) for AWS EC2 + Cloudflare steps.
 
 ```bash
 docker compose up --build
